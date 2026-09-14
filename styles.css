@@ -1,0 +1,366 @@
+.synovia-workbench {
+  padding: 16px;
+  font-family: var(--font-interface);
+  letter-spacing: 0;
+}
+
+.synovia-header,
+.synovia-toolbar,
+.synovia-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synovia-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.synovia-header h2 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.synovia-toolbar button {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+}
+
+.synovia-input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  line-height: 1.6;
+  border-radius: 6px;
+}
+
+.synovia-actions {
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.synovia-actions button {
+  max-width: 100%;
+  white-space: normal;
+  height: auto;
+  min-height: 32px;
+}
+
+.synovia-progress,
+.synovia-result-meta {
+  color: var(--text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.synovia-progress {
+  min-height: 20px;
+  white-space: pre-line;
+}
+
+.synovia-result-meta {
+  margin-top: 6px;
+}
+
+.synovia-snippet {
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  margin-bottom: 0;
+}
+
+.synovia-diff-modal {
+  width: min(1100px, 94vw);
+}
+
+.synovia-diff-headings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.synovia-diff-editor {
+  border: 1px solid var(--background-modifier-border);
+  overflow: auto;
+  max-height: 70vh;
+}
+
+.synovia-diff-editor .cm-editor {
+  background: var(--background-primary);
+  color: var(--text-normal);
+  font-size: 13px;
+}
+
+.synovia-diff-editor .cm-mergeView {
+  min-width: 520px;
+}
+
+.synovia-diff-editor .cm-scroller {
+  overflow: auto;
+}
+
+.synovia-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+.synovia-tabs button {
+  flex: 1;
+  box-shadow: none;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  min-width: 0;
+  padding: 6px 4px;
+  white-space: nowrap;
+  height: auto;
+  font-size: 12px;
+}
+@container (min-width: 440px) {
+  .synovia-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+.synovia-library-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.synovia-library-heading h3 { margin: 0; font-size: 17px; }
+.synovia-destination { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+.synovia-destination input { flex: 1; min-width: 0; width: 100%; }
+.synovia-destination label { flex-shrink: 0; font-size: 12px; color: var(--text-muted); }
+.synovia-filters { display: flex; flex-wrap: wrap; gap: 4px; padding-bottom: 12px; }
+.synovia-filters button { box-shadow: none; font-size: 12px; }
+.synovia-filters button[aria-selected="true"] { color: var(--text-on-accent); background: var(--interactive-accent); }
+.synovia-library-row { padding: 12px 0; border-top: 1px solid var(--background-modifier-border); overflow-wrap: anywhere; }
+.synovia-library-row a { font-size: 14px; line-height: 1.5; font-weight: 500; }
+.synovia-empty { padding: 24px 0; color: var(--text-muted); text-align: center; }
+.synovia-markdown { min-width: 0; overflow-x: auto; overflow-wrap: anywhere; }
+.synovia-markdown table { display: block; max-width: 100%; overflow-x: auto; }
+.synovia-rendered-diff { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; max-height: 60vh; overflow: auto; }
+@media (max-width: 600px) { .synovia-rendered-diff { grid-template-columns: minmax(0, 1fr); } }
+.synovia-workbench button:focus-visible, .synovia-workbench a:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+
+.synovia-tabs .is-active {
+  background: var(--background-modifier-hover);
+  font-weight: 600;
+}
+
+.synovia-source-kind {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.synovia-advanced {
+  margin-top: 14px;
+  border-top: 1px solid var(--background-modifier-border);
+  padding-top: 10px;
+}
+
+.synovia-advanced summary {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.synovia-workbench h3 {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 20px 0 8px;
+}
+
+.synovia-chunk {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+
+.synovia-diff-modal .modal-title {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.synovia-workbench select {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  height: auto;
+  min-height: 30px;
+}
+.synovia-search-form { display: grid; grid-template-columns: minmax(0, 1fr) 32px; gap: 8px; margin: 12px 0; }
+.synovia-search-form input { grid-column: 1 / -1; min-width: 0; width: 100%; }
+.synovia-search-form select { min-width: 0; width: 100%; }
+.synovia-search-form button { width: 32px; height: 32px; padding: 6px; }
+.synovia-workbench { min-width: 0; container-type: inline-size; }
+.synovia-workbench [role="tabpanel"] { min-width: 0; }
+.synovia-workbench .internal-link { overflow-wrap: anywhere; }
+.synovia-workbench button[aria-label]:not(:has(svg)) { overflow-wrap: anywhere; }
+.synovia-markdown .math-block { max-width: 100%; overflow-x: auto; }
+.synovia-filters { margin-top: 16px; }
+.synovia-format-warning {
+  color: var(--text-warning);
+  border-left: 2px solid var(--text-warning);
+  padding-left: 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.synovia-library-row details {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.synovia-agent {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 16px;
+  font-family: var(--font-interface);
+  letter-spacing: 0;
+  container-type: inline-size;
+}
+
+.synovia-agent-header,
+.synovia-agent-tools,
+.synovia-agent-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.synovia-agent-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.synovia-agent-header h2,
+.synovia-agent-result-head h3 {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.synovia-agent-header h2 { font-size: 18px; line-height: 1.3; }
+.synovia-agent-tools button { width: 32px; height: 32px; padding: 6px; }
+.synovia-agent-meta,
+.synovia-agent-status {
+  color: var(--text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.synovia-agent-status {
+  min-height: 20px;
+  margin-top: 10px;
+  white-space: pre-line;
+}
+
+.synovia-agent-composer {
+  margin-top: 18px;
+}
+
+.synovia-agent-composer label {
+  display: block;
+  color: var(--text-normal);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.synovia-agent-composer textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 112px;
+  margin-top: 8px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.synovia-agent-actions {
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.synovia-agent-actions button {
+  max-width: 100%;
+  min-height: 32px;
+  height: auto;
+  white-space: normal;
+}
+
+.synovia-agent-result {
+  min-width: 0;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.synovia-agent-result-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.synovia-agent-result-head h3 { font-size: 17px; line-height: 1.4; }
+.synovia-agent-stance {
+  flex: 0 1 auto;
+  max-width: 100%;
+  padding: 3px 7px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.synovia-agent-section {
+  min-width: 0;
+  margin-top: 14px;
+  border-top: 1px solid var(--background-modifier-border);
+  padding-top: 10px;
+}
+
+.synovia-agent-section summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.synovia-agent-evidence {
+  min-width: 0;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+.synovia-agent-evidence blockquote {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.synovia-agent-saved {
+  min-width: 0;
+  padding: 8px 0;
+  overflow-wrap: anywhere;
+}
+
+.synovia-agent button:focus-visible,
+.synovia-agent a:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.synovia-agent .synovia-markdown {
+  margin-top: 12px;
+}

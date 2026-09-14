@@ -1,0 +1,12 @@
+node_modules/
+main.js
+main.js.map
+dist/
+output/
+coverage/
+data.json
+.env
+.env.*
+!.env.example
+*.log
+Synovia-*.zip

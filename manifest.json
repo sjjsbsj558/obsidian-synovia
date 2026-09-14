@@ -1,0 +1,9 @@
+{
+  "id": "synovia",
+  "name": "Synovia",
+  "version": "0.2.0",
+  "minAppVersion": "1.11.4",
+  "description": "Ask questions over your local notes and form evidence-backed opinions.",
+  "author": "Synovia",
+  "isDesktopOnly": true
+}

@@ -1,0 +1,8 @@
+[
+  "Generated Markdown must render in Obsidian without third-party plugins. Keep source evidence verbatim; never repair an equation by guessing.",
+  "Use $...$ for inline TeX and standalone $$ delimiter lines for display TeX, with blank lines around display blocks. Do not put math in code fences. Preserve backslashes through JSON escaping, matrices, cases, units and conditions. Do not use HTML math images or \\(...\\) delimiters in generated prose.",
+  "Use GFM tables with a header and separator row, one row per line and equal cell counts. Escape literal pipes, including pipes inside math, as \\|. Move multiline formulas and complex or merged-cell tables outside the table; flag source conversion losses rather than silently flattening them.",
+  "Keep fenced code verbatim with a language identifier when known. Place blank lines around headings, lists, tables, blockquotes and fences. Never turn code examples into active links or formulas.",
+  "Use only supplied Obsidian note paths for [[note]] and [[note#heading]] links. Do not invent attachments or source locations. Keep frontmatter at the beginning, scalar strings quoted, and lists valid YAML. The application owns metadata.",
+  "One knowledge unit states one claim plus its scope, prerequisites and limitations. Search snippets remain incomplete evidence. Distinguish quotations, model interpretation and user notes. Regenerated prose must cite supplied evidence identifiers for every substantive paragraph."
+]
