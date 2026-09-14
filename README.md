@@ -1,0 +1,1 @@
+# synovia-obsidian
