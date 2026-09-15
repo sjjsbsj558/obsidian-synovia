@@ -64,6 +64,6 @@ npm run dev
 
 ## Copyright And License
 
-Copyright (c) 2026 Synovia contributors.
+Copyright (c) 2026 王一鸣.
 
-This project is licensed under the GNU General Public License v3.0 only (GPL-3.0). You may copy, modify, and redistribute it under the terms of that license. When distributing modified versions, retain the copyright and license notices, mark relevant changes, and provide the corresponding source as required by GPL-3.0. See [`LICENSE`](LICENSE).
+This project is released under the MIT License. You may use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, provided that the copyright notice and permission notice are included in all copies or substantial portions of the software. See [`LICENSE`](LICENSE) for the complete terms.
