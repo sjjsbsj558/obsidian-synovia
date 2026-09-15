@@ -66,4 +66,4 @@ npm run dev
 
 Copyright (c) 2026 Synovia contributors.
 
-This project is released under the GNU General Public License v3.0. Redistribution and modified versions must retain the copyright and license notices, provide the corresponding source as required by GPL-3.0, and keep derivative distributions under compatible GPL terms. See [`LICENSE`](LICENSE).
+This project is licensed under the GNU General Public License v3.0 only (GPL-3.0). You may copy, modify, and redistribute it under the terms of that license. When distributing modified versions, retain the copyright and license notices, mark relevant changes, and provide the corresponding source as required by GPL-3.0. See [`LICENSE`](LICENSE).
