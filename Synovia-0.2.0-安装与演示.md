@@ -1,4 +1,4 @@
-# Synovia 0.2.0 安装与演示
+# Synovia 0.2.1 安装与演示
 
 ## 一、导入插件
 
@@ -56,8 +56,9 @@
 
 默认连接方式是 `知乎 CLI / Skill`：
 
-- `知乎 CLI 命令` 保持 `zhihu-cli`，Windows 会尝试自动发现官方安装位置。
-- 如果自动发现失败，先在官方知乎 CLI 环境中完成登录，再把 `status` 返回的 `binary_path` 绝对路径填入此处。
+- 新设备先安装并检查官方知乎 Skill，再打开本插件；Skill 会在当前设备安装官方 CLI 并返回当前设备自己的 `binary_path`。
+- `知乎 CLI 命令` 保持 `zhihu-cli`，插件会按当前设备的用户目录自动发现 CLI，不要把另一台电脑的绝对路径复制过来。
+- 如果自动发现失败，在该设备运行官方 Skill 的 `status`；确认 `installed=true` 后再重启 Obsidian。只有自定义安装目录时，才把该设备本次 `status` 返回的 `binary_path` 填入设置。
 - 如果 CLI 已经登录，`知乎密钥（CLI 已登录时可留空）` 可以留空。
 - 也可以改用 `HTTP 搜索 API` 或 `MCP SSE`，但要按对应服务填写密钥和连接环境。
 

@@ -18,15 +18,18 @@ Synovia supports existing whole-vault extraction, search, topic, and Zhihu workf
 - Obsidian desktop `1.11.4` or newer.
 - Node.js `22.17` or newer for building from source.
 - A Chat Completions-compatible model endpoint is optional. Remote model calls are opt-in.
+- Zhihu features using `知乎 CLI / Skill` require the official Zhihu Skill and its CLI to be installed on the same device.
 
 ## Install From Release
 
-1. Download `Synovia-0.2.0.zip` from the GitHub Release.
+1. Download `Synovia-0.2.1.zip` from the GitHub Release.
 2. Extract it into your vault at `.obsidian/plugins/synovia`.
 3. In Obsidian, reload the plugin or restart Obsidian.
 4. Open Synovia and configure the model endpoint only if you need Agent-assisted analysis.
 
 The extracted plugin directory must contain `main.js`, `manifest.json`, `styles.css`, and the `skills/obsidian-markdown` directory.
+
+For Zhihu CLI features on a new device, install and authorize the official Zhihu Skill on that device first. Keep the Synovia setting `知乎 CLI 命令` as `zhihu-cli`; the plugin discovers the device-local CLI automatically and does not carry another computer's absolute path or credentials.
 
 ## Build From Source
 
@@ -64,4 +67,3 @@ npm run dev
 Copyright (c) 2026 Synovia contributors.
 
 This project is released under the GNU General Public License v3.0. Redistribution and modified versions must retain the copyright and license notices, provide the corresponding source as required by GPL-3.0, and keep derivative distributions under compatible GPL terms. See [`LICENSE`](LICENSE).
-

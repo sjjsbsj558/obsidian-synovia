@@ -66,10 +66,15 @@ test("CLI discovery follows official user directories and never falls back to PA
     assert.equal(resolveCliCommand(' "zhihu" ', {}, home), installed);
     assert.equal(resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: cliHome }, home), installed);
     assert.equal(resolveCliCommand(`"${process.execPath}"`, {}, home), process.execPath);
-    assert.throws(() => resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: join(home, "missing") }, home), /binary_path/u);
+    assert.equal(resolveCliCommand(join(home, "old", binary), { ZHIHU_CLI_HOME: cliHome }, home), installed);
+    assert.equal(resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: join(home, "missing") }, home), installed);
     assert.throws(() => resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: "relative" }, home), /绝对路径/u);
-    await mkdir(join(home, "directory", "current", binary), { recursive: true });
-    assert.throws(() => resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: join(home, "directory") }, home), /找不到/u);
+    const emptyHome = await mkdtemp(join(tmpdir(), "synovia-empty-"));
+    try {
+      assert.throws(() => resolveCliCommand("zhihu-cli", { ZHIHU_CLI_HOME: join(emptyHome, "directory") }, emptyHome), /找不到/u);
+    } finally {
+      await rm(emptyHome, { recursive: true, force: true });
+    }
   } finally {
     await rm(home, { recursive: true, force: true });
   }

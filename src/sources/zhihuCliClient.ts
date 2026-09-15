@@ -1,7 +1,8 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { statSync } from "node:fs";
-import { posix, win32 } from "node:path";
+import { basename, posix, win32 } from "node:path";
+import { dirname } from "node:path";
 import { homedir } from "node:os";
 import { z } from "zod";
 import { SourceDocumentSchema } from "../types";
@@ -14,16 +15,30 @@ export function resolveCliCommand(
   command: string, env: NodeJS.ProcessEnv = process.env, home = homedir(), platform = process.platform
 ): string {
   const normalized = command.trim().replace(/^"(.*)"$/u, "$1");
-  if (!["zhihu", "zhihu-cli"].includes(normalized)) return normalized;
   const path = platform === "win32" ? win32 : posix;
-  const cliHome = env.ZHIHU_CLI_HOME || (platform === "win32"
-    ? path.join(env.LOCALAPPDATA || path.join(env.USERPROFILE || home, "AppData", "Local"), "ZhihuCLI")
-    : platform === "darwin" ? path.join(home, "Library", "Application Support", "zhihu-cli")
-      : path.join(env.XDG_DATA_HOME || path.join(home, ".local", "share"), "zhihu-cli"));
-  if (!path.isAbsolute(cliHome)) throw new Error("知乎 CLI 安装目录必须为绝对路径，请检查 ZHIHU_CLI_HOME 或用户数据目录");
-  const installed = path.join(cliHome, "current", platform === "win32" ? "zhihu-cli.exe" : "zhihu-cli");
-  if (statSync(installed, { throwIfNoEntry: false })?.isFile()) return installed;
-  throw new Error("找不到知乎 CLI。请运行官方 skill 的 status 检查，并在设置中填写返回的 binary_path 绝对路径。");
+  const configuredHome = env.ZHIHU_CLI_HOME;
+  if (configuredHome && !path.isAbsolute(configuredHome)) {
+    throw new Error("知乎 CLI 安装目录必须为绝对路径，请检查 ZHIHU_CLI_HOME 或用户数据目录");
+  }
+  const homes = platform === "win32"
+    ? [configuredHome, env.LOCALAPPDATA && path.join(env.LOCALAPPDATA, "ZhihuCLI"),
+      env.USERPROFILE && path.join(env.USERPROFILE, "AppData", "Local", "ZhihuCLI"),
+      path.join(home, "AppData", "Local", "ZhihuCLI")]
+    : [configuredHome, platform === "darwin" ? path.join(home, "Library", "Application Support", "zhihu-cli")
+      : path.join(env.XDG_DATA_HOME || path.join(home, ".local", "share"), "zhihu-cli")];
+  const binary = platform === "win32" ? "zhihu-cli.exe" : "zhihu-cli";
+  const installed = homes.filter((value): value is string => Boolean(value)).map((value) =>
+    path.join(value, "current", binary)).find((value) => statSync(value, { throwIfNoEntry: false })?.isFile());
+  if (["zhihu", "zhihu-cli"].includes(normalized)) {
+    if (installed) return installed;
+    throw new Error("找不到知乎 CLI。请运行官方 skill 的 status 检查，并在设置中填写返回的 binary_path 绝对路径。");
+  }
+  if (statSync(normalized, { throwIfNoEntry: false })?.isFile()) return normalized;
+  const staleOfficialPath = path.isAbsolute(normalized)
+    && basename(normalized).toLowerCase() === binary
+    && !statSync(normalized, { throwIfNoEntry: false })?.isFile();
+  if (staleOfficialPath && installed) return installed;
+  return normalized;
 }
 
 export const GlobalSearchInputSchema = z.object({
@@ -92,10 +107,10 @@ function responseError(input: unknown): Error | undefined {
   return zhihuError(details.Code || code, "知乎 CLI 请求失败，请检查官方 CLI 状态");
 }
 
-function cliError(error: unknown): Error {
+function cliError(error: unknown, executable: string): Error {
   const value = (error ?? {}) as { code?: unknown; name?: unknown; stdout?: unknown; stderr?: unknown; killed?: boolean };
   if (value.code === "ENOENT") {
-    return new Error("找不到知乎 CLI。请在设置中保留“zhihu-cli”让插件自动发现，或填写 zhihu-cli.exe 的绝对路径。");
+    return new Error(`知乎 CLI 无法启动：${executable}。请确认文件存在，并重启 Obsidian 后重试。`);
   }
   for (const output of [value.stdout, value.stderr]) {
     if (typeof output !== "string" || !output.trim()) continue;
@@ -214,19 +229,27 @@ export class ZhihuCliClient {
     const invocation = buildCliInvocation(resolveCliCommand(command), [...args, "--timeout", duration]);
     let stdout: string;
     try {
-      const result = await execFileAsync(invocation.file, invocation.args, {
-        cwd: this.cwd || undefined,
+      const options = {
+        cwd: this.cwd || dirname(invocation.file),
         env,
         timeout,
         maxBuffer: 2_000_000,
         windowsHide: true,
         shell: false,
         signal
-      });
+      };
+      let result;
+      try {
+        result = await execFileAsync(invocation.file, invocation.args, options);
+      } catch (error) {
+        // Some Obsidian builds report an invalid inherited directory as ENOENT.
+        if (process.platform !== "win32" || this.cwd || (error as { code?: unknown }).code !== "ENOENT") throw error;
+        result = await execFileAsync(invocation.file, invocation.args, { ...options, cwd: undefined });
+      }
       stdout = result.stdout;
     } catch (error) {
       signal?.throwIfAborted();
-      throw cliError(error);
+      throw cliError(error, invocation.file);
     }
     signal?.throwIfAborted();
     const parsed = parseJson(stdout);

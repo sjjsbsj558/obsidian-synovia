@@ -28,6 +28,18 @@ function contentText(content: z.infer<typeof ContentSchema>): string {
     typeof part === "string" ? part : part.text ?? "").join("\n");
 }
 
+function responseJson(response: Awaited<ReturnType<Request>>, url: string): unknown {
+  const contentType = response.headers["content-type"] ?? response.headers["Content-Type"] ?? "";
+  if (/html/iu.test(contentType) || /^\s*<(?:!doctype|html)\b/iu.test(response.text)) {
+    throw new Error(`模型服务返回了网页而不是 JSON：${url}。请检查地址是否包含正确的 /v1 路径。`);
+  }
+  try {
+    return response.json;
+  } catch {
+    throw new Error(`模型服务返回的不是有效 JSON：${url}。请检查接口地址和服务类型。`);
+  }
+}
+
 export function jsonCandidates(text: string): unknown[] {
   const cleaned = text.trim().replace(/^```(?:json)?\s*/iu, "").replace(/\s*```$/iu, "").trim();
   const candidates = [cleaned];
@@ -157,7 +169,7 @@ export class ModelClient {
           throw error;
         }
       }
-      const envelope = EnvelopeSchema.parse(response.json);
+      const envelope = EnvelopeSchema.parse(responseJson(response, base.href));
       this.usage.requests++;
       this.usage.inputTokens += envelope.usage?.prompt_tokens ?? 0;
       this.usage.outputTokens += envelope.usage?.completion_tokens ?? 0;

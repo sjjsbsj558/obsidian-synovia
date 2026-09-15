@@ -84,3 +84,16 @@ test("JSON mode is disabled only after an explicit unsupported-parameter respons
   await new ModelClient(request, settings, "test-key").json("Return an object.", {}, z.object({ ok: z.boolean() }));
   assert.equal(calls, 2);
 });
+
+test("model client explains HTML responses instead of leaking JSON parse errors", async () => {
+  const settings = { ...DEFAULT_SETTINGS, allowRemote: true, modelBaseUrl: "https://example.com/v1", modelName: "test" };
+  const request: Request = async () => ({
+    status: 200, headers: { "content-type": "text/html; charset=utf-8" },
+    text: "<!doctype html><html><body>login</body></html>", arrayBuffer: new ArrayBuffer(0),
+    get json(): never { throw new SyntaxError("Unexpected token '<'"); }
+  });
+  await assert.rejects(
+    new ModelClient(request, settings, "test-key").json("Return an object.", {}, z.object({ ok: z.boolean() })),
+    /返回了网页而不是 JSON.*\/v1/iu
+  );
+});
